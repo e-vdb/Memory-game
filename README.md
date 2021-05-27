@@ -12,7 +12,7 @@ Code written in python3 with graphics user interface (GUI) using Tkinter.
 
 
 ## Tkinter interface
-### Two player
+### Two players
 ![TwoPlayers](https://user-images.githubusercontent.com/82372483/119819659-e64a7580-bef0-11eb-9325-5c6f1d8b230a.png)
 
 ### One player (solo mode)
