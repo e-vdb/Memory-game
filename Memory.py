@@ -29,7 +29,7 @@ rowNb=5
 colNb=4
 cardsNb=colNb*rowNb # Total number of cards
 pairsNb=cardsNb//2 # Number of different pairs
-themeList=['Peanuts','LooneyTunes']
+themeList=['Peanuts']
 
 # Reset global variables
 def resetGlobal():
