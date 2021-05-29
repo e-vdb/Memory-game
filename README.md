@@ -21,8 +21,8 @@ Choose characters for the memory among
 *  Peanuts (by Charles M. Schulz)
 *  Cartoon (images from https://www.apprendre-en-ligne.net/pj/memory/index.html )
 *  Add your own theme !!!
-  * Add a folder with characters images using the following name (carte-number.gif)
-  * In the Python script, add the folder name to themeList=['Peanuts','Cartoon'] 
+     * Add a folder with characters images using the following name (carte-number.gif)
+     * In the Python script, add the folder name to themeList=['Peanuts','Cartoon'] 
 
 
 ![theme](https://user-images.githubusercontent.com/82372483/120066821-91396b80-c078-11eb-919d-94f5eccfdf3d.png)
