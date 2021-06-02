@@ -5,6 +5,11 @@ Memory game for one player (solo mode) or two players.
 
 Code written in python3 with graphics user interface (GUI) using Tkinter.
 
+## Memory
+Memory consits in finding pairs of cards.
+
+To learn more about this game, visit https://en.wikipedia.org/wiki/Concentration_(card_game)
+
 ## Repository content
 To play the game, save the following files in the same directory.
 
