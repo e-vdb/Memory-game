@@ -14,8 +14,8 @@ To learn more about this game, visit https://en.wikipedia.org/wiki/Concentration
 To play the game, save the following files in the same directory.
 
 * Memory.py : Python script
-* Images folder containing characters pictures (in .gif)
-
+* Images folder :  characters pictures (in .gif) for GUI 
+  
 
 ## Tkinter interface
 
