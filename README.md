@@ -15,6 +15,7 @@ To play the game, save the following files in the same directory.
 
 * Memory.py : Python script
 * Images folder :  characters pictures (in .gif) for GUI 
+* about.txt : plain text document that contains copyright and license information
   
 
 ## Tkinter interface
@@ -48,5 +49,7 @@ Play alone
 ![game](https://user-images.githubusercontent.com/82372483/120066908-1a50a280-c079-11eb-9c4b-4964744e7a09.png)
 
 
+### About
 
+From the GUI you can read license information.
 
