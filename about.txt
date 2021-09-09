@@ -1,0 +1,8 @@
+Memory-game
+
+MIT License
+Game
+Copyright (c) 2021 Emeline Van der Beken
+
+Pictures
+Peanuts Copyright (c) Charles M. Schulz
