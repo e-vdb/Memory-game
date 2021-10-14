@@ -53,3 +53,5 @@ Play alone
 
 From the GUI you can read license information.
 
+## Tasks list
+- [ ] Document code
