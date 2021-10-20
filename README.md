@@ -55,3 +55,4 @@ From the GUI you can read license information.
 
 ## Tasks list
 - [ ] Document code
+- [ ] Implement versus AI mode
