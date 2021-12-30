@@ -14,6 +14,7 @@ Memory for one or two human players
 
 import random
 import tkinter as tk
+from help_functions import printRules, about
 
 # global variables
 turnedCards=0 # Number of visible cards
@@ -305,14 +306,7 @@ def stat1player():
     lab_scorePlayer1.pack(side=tk.LEFT)
 
 
-def about():
-    aboutWindow=tk.Toplevel()
-    aboutWindow.title("About") 
-    with open('about.txt') as f:
-        about=f.read()
-    lbl_about=tk.Label(aboutWindow,text=about,fg="black", anchor="e", justify=tk.LEFT)
-    lbl_about.pack(side=tk.TOP)
-    aboutWindow.mainloop()   
+
 ############################################################################################
 
 
@@ -329,26 +323,29 @@ top = tk.Menu(window)
 window.config(menu=top)
 jeu = tk.Menu(top, tearoff=False)
 top.add_cascade(label='Game', menu=jeu)
-submenu=tk.Menu(jeu, tearoff=False)
+submenu = tk.Menu(jeu, tearoff=False)
 jeu.add_cascade(label='New Game', menu=submenu)
 submenu.add_command(label='Dim 5x4', command=newGame5x4)
 submenu.add_command(label='Dim 5x6', command=newGame5x6)
 jeu.add_command(label='Close', command=window.destroy)
 
-joueurs=tk.Menu(top,tearoff=False)
-top.add_cascade(label='Players',menu=joueurs)
-joueurs.add_command(label='1 player',command=onePlayer)
-joueurs.add_command(label='2 players',command=twoPlayers)
+players_menu = tk.Menu(top,tearoff=False)
+top.add_cascade(label='Players',menu=players_menu)
+players_menu.add_command(label='1 player',command=onePlayer)
+players_menu.add_command(label='2 players',command=twoPlayers)
 
-themeMenu=tk.Menu(top,tearoff=False)
+themeMenu = tk.Menu(top,tearoff=False)
 top.add_command(label='Choose theme',command=frameTheme)
 
-helpMenu=tk.Menu(top, tearoff=False)
-top.add_command(label='About',command=about)
+help_menu = tk.Menu(top, tearoff=False)
+top.add_cascade(label='Help',menu=help_menu)
+help_menu.add_command(label='How to play?', command=printRules)
+help_menu.add_command(label='About', command=about)
+
 
 # images 
-blankCard=tk.PhotoImage(file='Images/blankCard.gif')
-themeCards=[tk.PhotoImage(file=str('Images/'+theme+'/carte-1.gif')) for theme in themeList]
+blankCard = tk.PhotoImage(file='Images/blankCard.gif')
+themeCards = [tk.PhotoImage(file=str('Images/'+theme+'/carte-1.gif')) for theme in themeList]
     
 # start-up
 frameTheme()
