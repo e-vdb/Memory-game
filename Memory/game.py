@@ -5,7 +5,6 @@ import tkinter as tk
 from typing import List
 from pathlib import Path
 from os.path import dirname, join
-from time import sleep
 
 
 IMAGES_FOLDER = join(Path(dirname(__file__)).parent, 'Images')
@@ -13,7 +12,7 @@ IMAGES_FOLDER = join(Path(dirname(__file__)).parent, 'Images')
 
 class Game:
 
-    def __init__(self, window):#, frame, frame_cards):
+    def __init__(self, window):
         self.THEMES = ['peanuts', 'Cartoon']
         self.BLANK_CARD = tk.PhotoImage(file=f'{IMAGES_FOLDER}/blankCard.gif')
         self.THEME_CARDS = [tk.PhotoImage(file=str(f'{IMAGES_FOLDER}/{theme}/carte-1.gif')) for theme in self.THEMES]
@@ -77,8 +76,14 @@ class Game:
         game_over_window = tk.Toplevel(self.window)
         game_over_window.title("Game Over")
         game_over_window.geometry("300x200")
-        label = tk.Label(game_over_window, text="Game Over")
-        label.pack()
+        if self.player_nb == 2:
+            if self.player1.score > self.player2.score:
+                winner = self.player1.name
+            elif self.player1.score < self.player2.score:
+                winner = self.player2.name
+            else:
+                winner = "No one"
+            tk.Label(game_over_window, text=f"Game Over. The winner is {winner}").pack()
 
     def switch_players(self) -> None:
         """
@@ -172,12 +177,12 @@ class Game:
         self.main_frame.destroy()
         self.main_frame = tk.Frame(self.window, height=500, width=500)
         self.main_frame.pack(side=tk.TOP)
-
         lab_Message = tk.Label(self.main_frame, text="Choose the theme you want to play with ")
+
         lab_Message.grid(row=0, column=1)
-        but_themes = []
-        for count, theme_card in enumerate(self.THEME_CARDS):
-            but_themes.append(tk.Button(self.main_frame, image=theme_card, command=lambda x=count: self.start_theme(x)))
+        but_themes = [tk.Button(self.main_frame, image=theme_card, command=lambda x=count: self.start_theme(x))
+                      for count, theme_card in enumerate(self.THEME_CARDS)]
+
         for count, but_theme in enumerate(but_themes):
             but_theme.grid(row=1, column=1 + count)
 
@@ -186,16 +191,15 @@ class Game:
         self.remove_radio_buttons()
         self.cards_frame = tk.Frame(self.window)
         self.cards_frame.pack(side=tk.BOTTOM)
-        self.but_cards = []
-        for i in range(self.cards_nb):
-            self.but_cards.append(tk.Button(self.cards_frame, image=self.hidden_card, command=lambda x=i: self.show(x)))
+        self.but_cards = [tk.Button(self.cards_frame, image=self.hidden_card, command=lambda x=i: self.show(x)) for i in range(self.cards_nb)]
+
         for count in range(self.cards_nb):
             self.but_cards[count].grid(row=count // self.game_dim[0], column=count % self.game_dim[0])
 
     # Show visible face of cards
     def show(self, item):
 
-        if item not in self.found_cards:
+        if item not in self.found_cards and self.current_player.can_play:
             if self.turned_cards_nb == 0:
                 self.but_cards[item].configure(image=self.cards_ids[item])
                 self.turned_cards_nb += 1
@@ -298,10 +302,8 @@ class Game:
         """ Increments the score of the current player. """
         self.current_player.increment_score()
         if self.current_player == self.player1:
-            #self.player1.increment_score()
             self.lab_score_player1.configure(text=str(self.player1.score))
         else:
-            #self.player2.increment_score()
             self.lab_score_player2.configure(text=str(self.player2.score))
 
     def set_dim_and_start(self, x):
