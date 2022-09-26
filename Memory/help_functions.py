@@ -18,15 +18,15 @@ def print_rules() -> None:
     -------
     None.
     """
-    ruleWindow = tk.Toplevel()
-    ruleWindow.resizable(False, False)
-    ruleWindow.title("How to play?")
+    rule_window = tk.Toplevel()
+    rule_window.resizable(False, False)
+    rule_window.title("How to play?")
     with open(f'{TEXT_FOLDER}/rules_eng.txt') as f:
         gameRules = f.read()
-    lab_Rule = tk.Label(ruleWindow, text=gameRules,
+    lab_Rule = tk.Label(rule_window, text=gameRules,
                         fg="black", anchor="e", justify=tk.LEFT)
     lab_Rule.pack(side=tk.TOP)
-    ruleWindow.mainloop()
+    rule_window.mainloop()
 
 
 def about() -> None:
@@ -41,11 +41,12 @@ def about() -> None:
     -------
     None.
     """
-    aboutWindow = tk.Toplevel()
-    aboutWindow.title("About")
+    about_window = tk.Toplevel()
+    about_window.resizable(False, False)
+    about_window.title("About")
     with open(f'{TEXT_FOLDER}/about.txt') as f:
         about = f.read()
-    lbl_about = tk.Label(aboutWindow, text=about,
+    lbl_about = tk.Label(about_window, text=about,
                          fg="black", anchor="e", justify=tk.LEFT)
     lbl_about.pack(side=tk.TOP)
-    aboutWindow.mainloop()
+    about_window.mainloop()
