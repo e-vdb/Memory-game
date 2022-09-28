@@ -8,7 +8,8 @@ class AIPlayer(Player):
     def __init__(self, name='AIPlayer'):
         super().__init__(name)
 
-    def play_random_cards(self, cards_ids):
+    @staticmethod
+    def play_random_cards(cards_ids):
         """AI player plays a turn."""
         first_card = choice(cards_ids)
         second_card = choice([id_card for id_card in cards_ids if id_card != first_card])

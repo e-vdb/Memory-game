@@ -1,3 +1,14 @@
 Memory Game
 
 Gameplay
+
+3 modes of play
+- Play alone
+- Play against the computer
+- Play against a friend
+
+Goal
+The game is played with a deck of 20/30 cards.
+The cards are laid out in a grid face down.
+The object of the game is to turn over pairs of matching cards.
+The game ends when all cards have been correctly matched.
