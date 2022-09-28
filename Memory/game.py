@@ -128,12 +128,6 @@ class Game:
         self.show_one_card(second_card)
         self.window.after(2000, self.check)
 
-    def show_one_card(self, card_id):
-        self.but_cards[card_id].configure(image=self.cards_ids[card_id])
-        self.turned_cards_nb += 1
-        self.turned_cards_ids.append(self.cards_ids[card_id])
-        self.turned_card_played.append(card_id)
-
     def reset_scores(self) -> None:
         """
         Resets scores of all players.
@@ -154,6 +148,7 @@ class Game:
         self.found_cards = []
         self.turned_cards_ids = []
         self.turned_card_played = []
+        self.game_over = False
 
     def load_cards(self) -> List[tk.PhotoImage]:
         """
@@ -207,16 +202,21 @@ class Game:
         for count in range(self.cards_nb):
             self.but_cards[count].grid(row=count // self.game_dim[0], column=count % self.game_dim[0])
 
-    # Show visible face of cards
+    def show_one_card(self, card_id):
+        self.but_cards[card_id].configure(image=self.cards_ids[card_id])
+        self.turned_cards_nb += 1
+        self.turned_cards_ids.append(self.cards_ids[card_id])
+        self.turned_card_played.append(card_id)
+
     def show(self, item):
 
         if item not in self.found_cards and self.current_player.can_play:
             if self.turned_cards_nb == 0:
-                #self.show_one_card(card_id=item)
-                self.but_cards[item].configure(image=self.cards_ids[item])
-                self.turned_cards_nb += 1
-                self.turned_cards_ids.append(self.cards_ids[item])
-                self.turned_card_played.append(item)
+                self.show_one_card(card_id=item)
+                #self.but_cards[item].configure(image=self.cards_ids[item])
+                #self.turned_cards_nb += 1
+                #self.turned_cards_ids.append(self.cards_ids[item])
+                #self.turned_card_played.append(item)
             elif self.turned_cards_nb == 1:
                 if item != self.turned_card_played[len(self.turned_card_played) - 1]:
                     self.but_cards[item].configure(image=self.cards_ids[item])
