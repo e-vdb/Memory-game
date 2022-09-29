@@ -121,8 +121,18 @@ class Game:
             self.player1.can_play = False
 
     def ai_player_turn(self):
-        possible_cards_ids = [i for i in range(self.cards_nb) if i not in self.found_cards]
-        first_card, second_card = self.player2.play_random_cards(possible_cards_ids)
+        if self.player2.search_pairs() is not None:
+            first_card, second_card = self.player2.search_pairs()
+        else:
+            possible_cards_ids = [i for i in range(self.cards_nb) if i not in self.found_cards]
+            try:
+                first_card = self.player2.play_one_random_card(possible_cards_ids)
+                second_card = self.player2.search_matching_card(card_id=first_card, image=self.cards_ids[first_card])
+            except:
+                first_card = None
+                second_card = None
+            if second_card is None:
+                first_card, second_card = self.player2.play_random_cards(possible_cards_ids)
 
         self.show_one_card(first_card)
         self.show_one_card(second_card)
@@ -207,22 +217,17 @@ class Game:
         self.turned_cards_nb += 1
         self.turned_cards_ids.append(self.cards_ids[card_id])
         self.turned_card_played.append(card_id)
+        if self.game_mode == 'Against AI':
+            self.player2.remembers_card(card_id=card_id, image=self.cards_ids[card_id])
 
     def show(self, item):
 
         if item not in self.found_cards and self.current_player.can_play:
             if self.turned_cards_nb == 0:
                 self.show_one_card(card_id=item)
-                #self.but_cards[item].configure(image=self.cards_ids[item])
-                #self.turned_cards_nb += 1
-                #self.turned_cards_ids.append(self.cards_ids[item])
-                #self.turned_card_played.append(item)
             elif self.turned_cards_nb == 1:
                 if item != self.turned_card_played[len(self.turned_card_played) - 1]:
-                    self.but_cards[item].configure(image=self.cards_ids[item])
-                    self.turned_cards_nb += 1
-                    self.turned_cards_ids.append(self.cards_ids[item])
-                    self.turned_card_played.append(item)
+                    self.show_one_card(card_id=item)
         if self.turned_cards_nb == 2:
             self.window.after(2000, self.check)
 
@@ -236,6 +241,9 @@ class Game:
                 self.but_cards[self.turned_card_played[len(self.turned_card_played) - 2]].configure(image=self.BLANK_CARD)
                 self.increment_score_player()
                 self.set_game_over()
+                if self.game_mode == "Against AI":
+                    self.player2.erase_found_cards(self.turned_cards_ids[-1])
+
                 if self.game_mode == "Against AI" and self.current_player == self.player2 and not self.game_over:
                     self.window.after(1000, self.ai_player_turn)
             elif self.player_nb == 2:
