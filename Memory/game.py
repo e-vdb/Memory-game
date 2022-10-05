@@ -12,7 +12,7 @@ IMAGES_FOLDER = join(Path(dirname(__file__)).parent, 'Images')
 class Game:
 
     def __init__(self, window):
-        self.THEMES = ['peanuts', 'Cartoon']
+        self.THEMES = ['Peanuts', 'Cartoon', 'Tintin']
         self.BLANK_CARD = tk.PhotoImage(file=f'{IMAGES_FOLDER}/blankCard.gif')
         self.THEME_CARDS = self.generate_theme_cards_list()
         self.player1 = None
@@ -232,7 +232,7 @@ class Game:
             text="Choose the theme you want to play with "
         )
 
-        lab_Message.grid(row=0, column=1)
+        lab_Message.grid(row=0, column=0)
         but_themes = [tk.Button(self.main_frame,
                                 image=theme_card,
                                 command=lambda x=count: self.start_theme(x)
@@ -240,7 +240,7 @@ class Game:
                       for count, theme_card in enumerate(self.THEME_CARDS)]
 
         for count, but_theme in enumerate(but_themes):
-            but_theme.grid(row=1, column=1 + count)
+            but_theme.grid(row=1, column=2 + count)
 
     def set_up_memory_frame(self):
         self.cards_frame.destroy()
