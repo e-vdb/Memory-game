@@ -6,7 +6,6 @@ from typing import List
 from pathlib import Path
 from os.path import dirname, join
 
-
 IMAGES_FOLDER = join(Path(dirname(__file__)).parent, 'Images')
 
 
@@ -15,7 +14,7 @@ class Game:
     def __init__(self, window):
         self.THEMES = ['peanuts', 'Cartoon']
         self.BLANK_CARD = tk.PhotoImage(file=f'{IMAGES_FOLDER}/blankCard.gif')
-        self.THEME_CARDS = [tk.PhotoImage(file=str(f'{IMAGES_FOLDER}/{theme}/carte-1.gif')) for theme in self.THEMES]
+        self.THEME_CARDS = self.generate_theme_cards_list()
         self.player1 = None
         self.player2 = None
         self.current_player = None
@@ -29,7 +28,9 @@ class Game:
         self.cards_nb = self.game_dim[0] * self.game_dim[1]
 
         self.theme = choice(self.THEMES)
-        self.hidden_card = tk.PhotoImage(file=f'{IMAGES_FOLDER}/{self.theme}/carte-0.gif')
+        self.hidden_card = tk.PhotoImage(
+            file=f'{IMAGES_FOLDER}/{self.theme}/carte-0.gif'
+        )
         self.turned_cards_nb = 0  # Number of visible cards
         self.turned_cards_ids = []  # List of index of turned over cards
         self.turned_card_played = []  # List of index of played cards
@@ -42,6 +43,10 @@ class Game:
         self.main_frame = tk.Frame(self.window, height=500, width=500)
         self.cards_frame = tk.Frame(self.window)
         self.set_up_theme_frame()
+
+    def generate_theme_cards_list(self):
+        return [tk.PhotoImage(file=str(f'{IMAGES_FOLDER}/{theme}/carte-1.gif'))
+                for theme in self.THEMES]
 
     def set_initial_game_parameters(self):
         choices = {0: {'mode': 'Alone', 'nb_player': 1},
@@ -59,14 +64,31 @@ class Game:
             self.set_two_players_mode()
 
     def set_radio_buttons(self):
-        self.R1 = tk.Radiobutton(self.window, text="Player alone",
-                                 command=self.set_initial_game_parameters, variable=self.radio_button_choice, value=0)
+        self.R1 = tk.Radiobutton(
+            self.window,
+            text="Player alone",
+            command=self.set_initial_game_parameters,
+            variable=self.radio_button_choice,
+            value=0
+        )
         self.R1.pack(side=tk.LEFT)
-        self.R2 = tk.Radiobutton(self.window, text="Player against computer",
-                                 command=self.set_initial_game_parameters, variable=self.radio_button_choice, value=1)
+
+        self.R2 = tk.Radiobutton(
+            self.window,
+            text="Player against computer",
+            command=self.set_initial_game_parameters,
+            variable=self.radio_button_choice,
+            value=1
+        )
         self.R2.pack(side=tk.LEFT)
-        self.R3 = tk.Radiobutton(self.window, text="Player against Player",
-                                 command=self.set_initial_game_parameters, variable=self.radio_button_choice, value=2)
+
+        self.R3 = tk.Radiobutton(
+            self.window,
+            text="Player against Player",
+            command=self.set_initial_game_parameters,
+            variable=self.radio_button_choice,
+            value=2
+        )
         self.R3.pack(side=tk.LEFT)
 
     def remove_radio_buttons(self):
@@ -90,7 +112,10 @@ class Game:
                 winner = self.player2.name
             else:
                 winner = "No one"
-            tk.Label(game_over_window, text=f"Game Over. The winner is {winner}").pack()
+            tk.Label(
+                master=game_over_window,
+                text=f"Game Over. The winner is {winner}"
+            ).pack()
 
     def switch_players(self) -> None:
         """
@@ -124,15 +149,23 @@ class Game:
         if self.player2.search_pairs() is not None:
             first_card, second_card = self.player2.search_pairs()
         else:
-            possible_cards_ids = [i for i in range(self.cards_nb) if i not in self.found_cards]
+            possible_cards_ids = [i for i in range(self.cards_nb)
+                                  if i not in self.found_cards]
             try:
-                first_card = self.player2.play_one_random_card(possible_cards_ids)
-                second_card = self.player2.search_matching_card(card_id=first_card, image=self.cards_ids[first_card])
-            except:
+                first_card = self.player2.play_one_random_card(
+                    possible_cards_ids
+                )
+                second_card = self.player2.search_matching_card(
+                    card_id=first_card,
+                    image=self.cards_ids[first_card]
+                )
+            except Exception:
                 first_card = None
                 second_card = None
             if second_card is None:
-                first_card, second_card = self.player2.play_random_cards(possible_cards_ids)
+                first_card, second_card = self.player2.play_random_cards(
+                    possible_cards_ids
+                )
 
         self.show_one_card(first_card)
         self.show_one_card(second_card)
@@ -167,14 +200,16 @@ class Game:
         Returns
         -------
         List[tk.PhotoImage]
-            List containing unique cards (images) chosen randomly for the memory game
+            List containing unique cards (images) chosen randomly.
 
         """
 
         total_nb = 17
         ids_cards = list(range(1, total_nb + 1))
         chosen_cards = sample(ids_cards, k=self.cards_nb // 2)
-        return [tk.PhotoImage(file=str(f'{IMAGES_FOLDER}/{self.theme}/carte-{str(card)}.gif')) for card in chosen_cards]
+        return [tk.PhotoImage(
+            file=str(f'{IMAGES_FOLDER}/{self.theme}/carte-{str(card)}.gif'))
+            for card in chosen_cards]
 
     def initiate_game(self) -> List[tk.PhotoImage]:
         """
@@ -192,10 +227,16 @@ class Game:
         self.main_frame.destroy()
         self.main_frame = tk.Frame(self.window, height=500, width=500)
         self.main_frame.pack(side=tk.TOP)
-        lab_Message = tk.Label(self.main_frame, text="Choose the theme you want to play with ")
+        lab_Message = tk.Label(
+            master=self.main_frame,
+            text="Choose the theme you want to play with "
+        )
 
         lab_Message.grid(row=0, column=1)
-        but_themes = [tk.Button(self.main_frame, image=theme_card, command=lambda x=count: self.start_theme(x))
+        but_themes = [tk.Button(self.main_frame,
+                                image=theme_card,
+                                command=lambda x=count: self.start_theme(x)
+                                )
                       for count, theme_card in enumerate(self.THEME_CARDS)]
 
         for count, but_theme in enumerate(but_themes):
@@ -206,11 +247,14 @@ class Game:
         self.remove_radio_buttons()
         self.cards_frame = tk.Frame(self.window)
         self.cards_frame.pack(side=tk.BOTTOM)
-        self.but_cards = [tk.Button(self.cards_frame, image=self.hidden_card, command=lambda x=i: self.show(x))
+        self.but_cards = [tk.Button(self.cards_frame,
+                                    image=self.hidden_card,
+                                    command=lambda x=i: self.show(x))
                           for i in range(self.cards_nb)]
 
         for count in range(self.cards_nb):
-            self.but_cards[count].grid(row=count // self.game_dim[0], column=count % self.game_dim[0])
+            self.but_cards[count].grid(row=count // self.game_dim[0],
+                                       column=count % self.game_dim[0])
 
     def show_one_card(self, card_id):
         self.but_cards[card_id].configure(image=self.cards_ids[card_id])
@@ -218,37 +262,38 @@ class Game:
         self.turned_cards_ids.append(self.cards_ids[card_id])
         self.turned_card_played.append(card_id)
         if self.game_mode == 'Against AI':
-            self.player2.remembers_card(card_id=card_id, image=self.cards_ids[card_id])
+            self.player2.remembers_card(card_id=card_id,
+                                        image=self.cards_ids[card_id])
 
     def show(self, item):
-
         if item not in self.found_cards and self.current_player.can_play:
             if self.turned_cards_nb == 0:
                 self.show_one_card(card_id=item)
             elif self.turned_cards_nb == 1:
-                if item != self.turned_card_played[len(self.turned_card_played) - 1]:
+                if item != self.turned_card_played[-1]:
                     self.show_one_card(card_id=item)
         if self.turned_cards_nb == 2:
             self.window.after(2000, self.check)
 
     def check(self):
-
-        if self.turned_cards_nb == 2:
-            if self.turned_cards_ids[len(self.turned_cards_ids) - 1] == self.turned_cards_ids[len(self.turned_cards_ids) - 2]:
-                self.found_cards.append(self.turned_card_played[len(self.turned_card_played) - 1])
-                self.found_cards.append(self.turned_card_played[len(self.turned_card_played) - 2])
-                self.but_cards[self.turned_card_played[len(self.turned_card_played) - 1]].configure(image=self.BLANK_CARD)
-                self.but_cards[self.turned_card_played[len(self.turned_card_played) - 2]].configure(image=self.BLANK_CARD)
-                self.increment_score_player()
-                self.set_game_over()
-                if self.game_mode == "Against AI":
-                    self.player2.erase_found_cards(self.turned_cards_ids[-1])
-
-                if self.game_mode == "Against AI" and self.current_player == self.player2 and not self.game_over:
+        if self.turned_cards_nb != 2:
+            return
+        if self.turned_cards_ids[-1] == self.turned_cards_ids[-2]:
+            self.found_cards.append(self.turned_card_played[-1])
+            self.found_cards.append(self.turned_card_played[-2])
+            self.but_cards[self.turned_card_played[-1]].configure(
+                image=self.BLANK_CARD)
+            self.but_cards[self.turned_card_played[-2]].configure(
+                image=self.BLANK_CARD)
+            self.increment_score_player()
+            self.set_game_over()
+            if self.game_mode == "Against AI":
+                self.player2.erase_found_cards(self.turned_cards_ids[-1])
+                if self.current_player == self.player2 and not self.game_over:
                     self.window.after(1000, self.ai_player_turn)
-            elif self.player_nb == 2:
-                self.switch_players()
-            self.reinit()
+        elif self.player_nb == 2:
+            self.switch_players()
+        self.reinit()
 
     def reinit(self):
         """
@@ -267,7 +312,10 @@ class Game:
 
     def start_new_game(self):
         """
-        Resets game parameters and load a new memory to start a new game with set dimensions and players.
+        Start a new memory game with set dimensions and players.
+
+        Resets game parameters.
+        Load a new memory to start a new game.
 
         Returns
         -------
@@ -286,7 +334,8 @@ class Game:
 
     def start_theme(self, x):
         self.theme = self.THEMES[x]
-        self.hidden_card = tk.PhotoImage(file=f'{IMAGES_FOLDER}/{self.theme}/carte-0.gif')
+        self.hidden_card = tk.PhotoImage(
+            file=f'{IMAGES_FOLDER}/{self.theme}/carte-0.gif')
         self.start_new_game()
 
     def display_players_score(self) -> None:
@@ -294,16 +343,34 @@ class Game:
         self.main_frame.destroy()
         self.main_frame = tk.Frame(self.window)
         self.main_frame.pack(side=tk.TOP)
-        self.lab_player1 = tk.Label(self.main_frame, text=f' {self.player1.name.upper()} : ', font=("Helvetica", 20), fg='red')
+        self.lab_player1 = tk.Label(
+            master=self.main_frame,
+            text=f' {self.player1.name.upper()} : ',
+            font=("Helvetica", 20),
+            fg='red'
+        )
         self.lab_player1.pack(side=tk.LEFT)
 
-        self.lab_score_player1 = tk.Label(self.main_frame, text='0', font=("Helvetica", 20))
+        self.lab_score_player1 = tk.Label(
+            master=self.main_frame,
+            text='0',
+            font=("Helvetica", 20)
+        )
         self.lab_score_player1.pack(side=tk.LEFT)
 
-        self.lab_player2 = tk.Label(self.main_frame, text=f' {self.player2.name.upper()} : ', font=("Helvetica", 20), fg='black')
+        self.lab_player2 = tk.Label(
+            master=self.main_frame,
+            text=f' {self.player2.name.upper()} : ',
+            font=("Helvetica", 20),
+            fg='black'
+        )
         self.lab_player2.pack(side=tk.LEFT)
 
-        self.lab_score_player2 = tk.Label(self.main_frame, text='0', font=("Helvetica", 20))
+        self.lab_score_player2 = tk.Label(
+            master=self.main_frame,
+            text='0',
+            font=("Helvetica", 20)
+        )
         self.lab_score_player2.pack(side=tk.LEFT)
 
     def display_stat_1player(self):
@@ -311,9 +378,19 @@ class Game:
         self.main_frame.destroy()
         self.main_frame = tk.Frame(self.window)
         self.main_frame.pack(side=tk.TOP)
-        self.lab_player1 = tk.Label(self.main_frame, text='Pairs of cards = ', font=("Helvetica", 20), fg='black')
+
+        self.lab_player1 = tk.Label(
+            master=self.main_frame,
+            text='Pairs of cards = ',
+            font=("Helvetica", 20),
+            fg='black'
+        )
         self.lab_player1.pack(side=tk.LEFT)
-        self.lab_score_player1 = tk.Label(self.main_frame, text='0', font=("Helvetica", 20))
+        self.lab_score_player1 = tk.Label(
+            master=self.main_frame,
+            text='0',
+            font=("Helvetica", 20)
+        )
         self.lab_score_player1.pack(side=tk.LEFT)
 
     def increment_score_player(self) -> None:
