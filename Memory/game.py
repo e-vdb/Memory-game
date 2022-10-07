@@ -64,37 +64,34 @@ class Game:
             self.set_two_players_mode()
 
     def set_radio_buttons(self):
+        self.radio_buttons_frame = tk.Frame(master=self.window)
+        self.radio_buttons_frame.grid(row=0, column=0)
         self.R1 = tk.Radiobutton(
-            self.window,
+            self.radio_buttons_frame,
             text="Player alone",
             command=self.set_initial_game_parameters,
             variable=self.radio_button_choice,
             value=0
         )
-        self.R1.pack(side=tk.LEFT)
+        self.R1.grid(row=0, column=0)
 
         self.R2 = tk.Radiobutton(
-            self.window,
+            self.radio_buttons_frame,
             text="Player against computer",
             command=self.set_initial_game_parameters,
             variable=self.radio_button_choice,
             value=1
         )
-        self.R2.pack(side=tk.LEFT)
+        self.R2.grid(row=1, column=0)
 
         self.R3 = tk.Radiobutton(
-            self.window,
+            self.radio_buttons_frame,
             text="Player against Player",
             command=self.set_initial_game_parameters,
             variable=self.radio_button_choice,
             value=2
         )
-        self.R3.pack(side=tk.LEFT)
-
-    def remove_radio_buttons(self):
-        self.R1.pack_forget()
-        self.R2.pack_forget()
-        self.R3.pack_forget()
+        self.R3.grid(row=2, column=0)
 
     def set_game_over(self):
         if len(self.found_cards) == self.cards_nb:
@@ -115,7 +112,7 @@ class Game:
             tk.Label(
                 master=game_over_window,
                 text=f"Game Over. The winner is {winner}"
-            ).pack()
+            ).grid(row=0, column=0)
 
     def switch_players(self) -> None:
         """
@@ -226,7 +223,8 @@ class Game:
         self.cards_frame.destroy()
         self.main_frame.destroy()
         self.main_frame = tk.Frame(self.window, height=500, width=500)
-        self.main_frame.pack(side=tk.TOP)
+        self.main_frame.grid(row=0, column=1)
+
         lab_Message = tk.Label(
             master=self.main_frame,
             text="Choose the theme you want to play with "
@@ -244,9 +242,10 @@ class Game:
 
     def set_up_memory_frame(self):
         self.cards_frame.destroy()
-        self.remove_radio_buttons()
+        self.radio_buttons_frame.destroy()
         self.cards_frame = tk.Frame(self.window)
-        self.cards_frame.pack(side=tk.BOTTOM)
+        self.cards_frame.grid(row=1, column=1)
+
         self.but_cards = [tk.Button(self.cards_frame,
                                     image=self.hidden_card,
                                     command=lambda x=i: self.show(x))
@@ -342,21 +341,22 @@ class Game:
         """ Set up the frame with the names and scores of both players. """
         self.main_frame.destroy()
         self.main_frame = tk.Frame(self.window)
-        self.main_frame.pack(side=tk.TOP)
+        self.main_frame.grid(row=0, column=1)
+
         self.lab_player1 = tk.Label(
             master=self.main_frame,
             text=f' {self.player1.name.upper()} : ',
             font=("Helvetica", 20),
             fg='red'
         )
-        self.lab_player1.pack(side=tk.LEFT)
+        self.lab_player1.grid(row=0, column=0)
 
         self.lab_score_player1 = tk.Label(
             master=self.main_frame,
             text='0',
             font=("Helvetica", 20)
         )
-        self.lab_score_player1.pack(side=tk.LEFT)
+        self.lab_score_player1.grid(row=0, column=1)
 
         self.lab_player2 = tk.Label(
             master=self.main_frame,
@@ -364,20 +364,20 @@ class Game:
             font=("Helvetica", 20),
             fg='black'
         )
-        self.lab_player2.pack(side=tk.LEFT)
+        self.lab_player2.grid(row=0, column=2)
 
         self.lab_score_player2 = tk.Label(
             master=self.main_frame,
             text='0',
             font=("Helvetica", 20)
         )
-        self.lab_score_player2.pack(side=tk.LEFT)
+        self.lab_score_player2.grid(row=0, column=3)
 
     def display_stat_1player(self):
         """ Set up the frame with the name and score of the player. """
         self.main_frame.destroy()
         self.main_frame = tk.Frame(self.window)
-        self.main_frame.pack(side=tk.TOP)
+        self.main_frame.grid(row=0, column=1)
 
         self.lab_player1 = tk.Label(
             master=self.main_frame,
@@ -385,13 +385,14 @@ class Game:
             font=("Helvetica", 20),
             fg='black'
         )
-        self.lab_player1.pack(side=tk.LEFT)
+        self.lab_player1.grid(row=0, column=0)
+
         self.lab_score_player1 = tk.Label(
             master=self.main_frame,
             text='0',
             font=("Helvetica", 20)
         )
-        self.lab_score_player1.pack(side=tk.LEFT)
+        self.lab_score_player1.grid(row=0, column=1)
 
     def increment_score_player(self) -> None:
         """ Increments the score of the current player. """
