@@ -65,7 +65,7 @@ class Game:
 
     def set_radio_buttons(self):
         self.radio_buttons_frame = tk.Frame(master=self.window)
-        self.radio_buttons_frame.grid(row=0, column=0)
+        self.radio_buttons_frame.grid(row=0, column=0, sticky=tk.W)
         self.R1 = tk.Radiobutton(
             self.radio_buttons_frame,
             text="Player alone",
@@ -73,7 +73,7 @@ class Game:
             variable=self.radio_button_choice,
             value=0
         )
-        self.R1.grid(row=0, column=0)
+        self.R1.grid(row=0, column=0, sticky=tk.W)
 
         self.R2 = tk.Radiobutton(
             self.radio_buttons_frame,
@@ -82,7 +82,7 @@ class Game:
             variable=self.radio_button_choice,
             value=1
         )
-        self.R2.grid(row=1, column=0)
+        self.R2.grid(row=1, column=0, sticky=tk.W)
 
         self.R3 = tk.Radiobutton(
             self.radio_buttons_frame,
@@ -91,7 +91,7 @@ class Game:
             variable=self.radio_button_choice,
             value=2
         )
-        self.R3.grid(row=2, column=0)
+        self.R3.grid(row=2, column=0, sticky=tk.W)
 
     def set_game_over(self):
         if len(self.found_cards) == self.cards_nb:
@@ -230,7 +230,7 @@ class Game:
             text="Choose the theme you want to play with "
         )
 
-        lab_Message.grid(row=0, column=0)
+        lab_Message.grid(row=0, column=2, columnspan=3)
         but_themes = [tk.Button(self.main_frame,
                                 image=theme_card,
                                 command=lambda x=count: self.start_theme(x)
