@@ -55,4 +55,7 @@ From the GUI you can read license information.
 
 ## Tasks list
 - [ ] Document code
-- [ ] Implement versus AI mode
+- [x] Implement versus AI mode
+- [ ] Implement versus AI mode with different difficulty levels
+- [x] Add more themes
+- [x] Add script to process images for memory game
