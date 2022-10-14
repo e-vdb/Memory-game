@@ -4,7 +4,9 @@ from random import choice, sample
 import tkinter as tk
 from typing import List
 from pathlib import Path
-from os.path import dirname, join
+from os.path import dirname, join, isdir
+from os import listdir
+
 
 IMAGES_FOLDER = join(Path(dirname(__file__)).parent, 'Images')
 
@@ -12,7 +14,7 @@ IMAGES_FOLDER = join(Path(dirname(__file__)).parent, 'Images')
 class Game:
 
     def __init__(self, window):
-        self.THEMES = ['Peanuts', 'Cartoon', 'Tintin']
+        self.THEMES = self.find_all_themes()
         self.BLANK_CARD = tk.PhotoImage(file=f'{IMAGES_FOLDER}/blankCard.gif')
         self.THEME_CARDS = self.generate_theme_cards_list()
         self.player1 = None
@@ -28,6 +30,7 @@ class Game:
         self.cards_nb = self.game_dim[0] * self.game_dim[1]
 
         self.theme = choice(self.THEMES)
+
         self.hidden_card = tk.PhotoImage(
             file=f'{IMAGES_FOLDER}/{self.theme}/carte-0.gif'
         )
@@ -43,6 +46,12 @@ class Game:
         self.main_frame = tk.Frame(self.window, height=500, width=500)
         self.cards_frame = tk.Frame(self.window)
         self.set_up_theme_frame()
+
+    def find_all_themes(self):
+        all_themes = [theme for theme in listdir(IMAGES_FOLDER)
+                      if isdir(join(IMAGES_FOLDER, theme))]
+        all_themes.sort()
+        return all_themes
 
     def generate_theme_cards_list(self):
         return [tk.PhotoImage(file=str(f'{IMAGES_FOLDER}/{theme}/carte-1.gif'))
@@ -190,6 +199,10 @@ class Game:
         self.turned_card_played = []
         self.game_over = False
 
+    def find_total_nb_cards_theme(self):
+        return len([file for file in listdir(join(IMAGES_FOLDER, self.theme))
+                    if file.endswith('.gif')]) - 1
+
     def load_cards(self) -> List[tk.PhotoImage]:
         """
         Loads the cards images and returns a list of cards
@@ -201,7 +214,7 @@ class Game:
 
         """
 
-        total_nb = 17
+        total_nb = self.find_total_nb_cards_theme()
         ids_cards = list(range(1, total_nb + 1))
         chosen_cards = sample(ids_cards, k=self.cards_nb // 2)
         return [tk.PhotoImage(
