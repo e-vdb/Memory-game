@@ -15,7 +15,6 @@ class Game:
 
     def __init__(self, window):
         self.THEMES = self.find_all_themes()
-        self.BLANK_CARD = tk.PhotoImage(file=f'{IMAGES_FOLDER}/blankCard.gif')
         self.THEME_CARDS = self.generate_theme_cards_list()
         self.player1 = None
         self.player2 = None
@@ -33,6 +32,9 @@ class Game:
 
         self.hidden_card = tk.PhotoImage(
             file=f'{IMAGES_FOLDER}/{self.theme}/carte-0.gif'
+        )
+        self.blank_card = tk.PhotoImage(
+            file=f'{IMAGES_FOLDER}/{self.theme}/blankCard.gif'
         )
         self.turned_cards_nb = 0  # Number of visible cards
         self.turned_cards_ids = []  # List of index of turned over cards
@@ -294,9 +296,9 @@ class Game:
             self.found_cards.append(self.turned_card_played[-1])
             self.found_cards.append(self.turned_card_played[-2])
             self.but_cards[self.turned_card_played[-1]].configure(
-                image=self.BLANK_CARD)
+                image=self.blank_card)
             self.but_cards[self.turned_card_played[-2]].configure(
-                image=self.BLANK_CARD)
+                image=self.blank_card)
             self.increment_score_player()
             self.set_game_over()
             if self.game_mode == "Against AI":
@@ -348,6 +350,9 @@ class Game:
         self.theme = self.THEMES[x]
         self.hidden_card = tk.PhotoImage(
             file=f'{IMAGES_FOLDER}/{self.theme}/carte-0.gif')
+        self.blank_card = tk.PhotoImage(
+            file=f'{IMAGES_FOLDER}/{self.theme}/blankCard.gif'
+        )
         self.start_new_game()
 
     def display_players_score(self) -> None:
