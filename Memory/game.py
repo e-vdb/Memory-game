@@ -56,7 +56,7 @@ class Game:
         return all_themes
 
     def generate_theme_cards_list(self):
-        return [tk.PhotoImage(file=str(f'{IMAGES_FOLDER}/{theme}/carte-1.gif'))
+        return [tk.PhotoImage(file=str(f'{IMAGES_FOLDER}/{theme}/carte-0.gif'))
                 for theme in self.THEMES]
 
     def set_initial_game_parameters(self):
@@ -203,7 +203,7 @@ class Game:
 
     def find_total_nb_cards_theme(self):
         return len([file for file in listdir(join(IMAGES_FOLDER, self.theme))
-                    if file.endswith('.gif')]) - 1
+                    if file.endswith('.gif')]) - 2
 
     def load_cards(self) -> List[tk.PhotoImage]:
         """
@@ -217,6 +217,7 @@ class Game:
         """
 
         total_nb = self.find_total_nb_cards_theme()
+
         ids_cards = list(range(1, total_nb + 1))
         chosen_cards = sample(ids_cards, k=self.cards_nb // 2)
         return [tk.PhotoImage(
